@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>XO:SOUL DARK V14.1</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;background:#000;color:#fff}
+body.dark{background:#000} body.light{background:#5bc0ff}
+.star{position:fixed;background:#fff;border-radius:50%;z-index:-1}
+#gameWrap{width:100%;max-width:360px;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px 8px}
+h1{font-size:26px;margin:2px 0;letter-spacing:2px;font-weight:900} body.dark h1{color:#00e5ff} body.dark h1 span{color:#fff;font-weight:400} body.light h1{color:#fff} body.light h1 span{color:#000}
+#topBar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:2px 4px}
+#profileIcon{width:36px;height:36px;border-radius:50%;background:#222;display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid #00e5ff;cursor:pointer}
+#insta{font-size:9px;padding:3px 8px;border-radius:20px;font-weight:bold} body.dark #insta{background:#111;color:#00e5ff;border:1px solid #00e5ff44} body.light #insta{background:#fff;color:#5bc0ff}
+#top{font-size:10px;padding:5px 8px;border-radius:20px;display:flex;gap:6px;align-items:center;font-weight:bold} body.dark #top{background:#0a1a2a;color:#fff;border:1px solid #ffffff15} body.light #top{background:#fff;color:#000}
+#status{font-size:11px;padding:6px 10px;border-radius:16px;font-weight:bold;text-align:center;min-height:28px;display:flex;align-items:center;justify-content:center;width:100%;max-width:320px} body.dark #status{background:#001a33;color:#00e5ff} body.light #status{background:#fff;color:#000}
+#board{display:grid;grid-template-columns:repeat(3,72px);gap:6px;padding:8px;border-radius:18px} body.dark #board{background:#0a1a2a;border:2px solid #003366} body.light #board{background:#ffffffcc;border:2px solid #fff}
+.cell{width:72px;height:72px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:bold} body.dark .cell{background:#000;border:1px solid #111} body.dark .cell.x{color:#00e5ff;background:#002244} body.dark .cell.o{color:#ff3b3b;background:#220000} body.light .cell{background:#fff} body.light .cell.x{color:#ff3b3b} body.light .cell.o{color:#0066ff}
+.cell.win{background:#facc15!important;color:#000!important}
+.btn{padding:6px 10px;border-radius:16px;border:0;font-size:9px;font-weight:bold;margin:1px} body.dark .btn{background:#111;color:#fff} body.light .btn{background:#000;color:#fff} .btn.play{background:#fff!important;color:#000!important}
+.langBtn{padding:5px 8px;border-radius:12px;border:0;font-size:9px;font-weight:bold;background:#333;color:#fff} .langBtn.active{background:#00e5ff!important;color:#000!important}
+#controls{display:flex;gap:4px;justify-content:center;width:100%}
+#score{font-size:9px;padding:4px 8px;border-radius:14px} body.dark #score{background:#111;color:#fff} body.light #score{background:#000;color:#fff}
+#diffBar{display:flex;gap:3px;flex-wrap:wrap;justify-content:center} #aiInfo{font-size:8px;padding:3px 6px;border-radius:10px;text-align:center} body.dark #aiInfo{color:#666} body.light #aiInfo{color:#fff}
+#footer{font-size:7px;color:#666;text-align:center;line-height:1.4;padding:2px}
+#profileScreen,#pauseScreen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:30;padding:10px} body.dark #profileScreen,body.dark #pauseScreen{background:#000} body.light #profileScreen,body.light #pauseScreen{background:#5bc0ff}
+#profileBox{background:#fff;padding:14px;border-radius:18px;width:98%;max-width:360px;color:#000;text-align:center;max-height:96dvh;overflow:auto}
+#pauseBox{background:#fff;padding:16px;border-radius:18px;width:95%;max-width:330px;color:#000;text-align:center}
+#profileBox h2,#pauseBox h2{margin-bottom:8px;color:#000;font-size:15px} #profileBox input, #profileBox select{width:100%;padding:8px;border-radius:10px;border:2px solid #eee;margin:3px 0;font-size:12px;text-align:center}
+#profileBox button,#pauseBox button{width:100%;padding:10px;border-radius:12px;border:0;background:#000;color:#fff;font-weight:bold;margin-top:6px;font-size:12px}
+#profileLangBar,#pauseLangBar{display:flex;gap:4px;justify-content:center;margin:6px 0;flex-wrap:wrap}
+#pauseModeBar{display:flex;gap:5px;justify-content:center;margin:6px 0}
+.modeBtn{padding:6px 12px;border-radius:12px;border:0;font-size:10px;font-weight:bold;background:#222;color:#fff;flex:1} .modeBtn.active{background:#00e5ff!important;color:#000!important}
+#avatarGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0;max-height:140px;overflow:auto;padding:4px;background:#f5f5f5;border-radius:12px}
+.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#fff;border:2px solid #eee;cursor:pointer} .avatar.selected{border-color:#00e5ff;background:#00e5ff22;transform:scale(1.1)}
+.hidden{display:none!important}
+</style>
+</head>
+<body class="dark">
+<div id="stars"></div>
+
+<div id="profileScreen" class="hidden">
+<div id="profileBox">
+<div id="profileLangBar">
+<button class="langBtn" id="pl_ma" onclick="setLang('ma')">🇲🇦 دارجة</button>
+<button class="langBtn" id="pl_ar" onclick="setLang('ar')">🇸🇦 فصحى</button>
+<button class="langBtn" id="pl_en" onclick="setLang('en')">🇺🇸 EN</button>
+<button class="langBtn" id="pl_fr" onclick="setLang('fr')">🇫🇷 FR</button>
+</div>
+<h2 id="t_who">👤 شكون نتا؟</h2>
+<input id="p_name" placeholder="اللقب ديالك" maxlength="12">
+<p style="font-size:10px;margin:6px 0 2px" id="t_chooseAvatar">اختر صورتك 👇</p>
+<div id="avatarGrid"></div>
+<select id="p_gender"><option value="" id="t_gender">الجنس</option><option value="male" id="t_male">ذكر 👨</option><option value="female" id="t_female">أنثى 👩</option></select>
+<select id="p_age"><option value="" id="t_age">العمر</option><option value="kid" id="t_kid">قل من 13</option><option value="teen" id="t_teen">13-18</option><option value="young" id="t_young">19-25</option><option value="adult" id="t_adult">26+</option></select>
+<button onclick="saveProfile()" id="t_enter">حفظ ودخول 🚀</button>
+</div>
+</div>
+
+<div id="gameWrap">
+<div style="display:flex;flex-direction:column;align-items:center;width:100%">
+<div id="topBar">
+<div id="insta">@k9n_zen_pc</div>
+<div id="profileIcon" onclick="showProfile()">👤</div>
+</div>
+<h1>XO<span>:SOUL DARK</span></h1>
+<div id="diffBar">
+<button class="btn" id="d_easy">😊 سهل</button>
+<button class="btn" id="d_medium">🤔 متوسط</button>
+<button class="btn" id="d_hard">😈 صعب</button>
+<button class="btn" id="d_adaptive">🧠 ذكي</button>
+</div>
+<div id="aiInfo">...</div>
+<div id="top"><span id="t_level">المرحلة</span> <b id="lvl">1</b> | <span id="t_power">قوة</span> <b id="power">★☆☆☆☆</b></div>
+<div id="status">...</div>
+</div>
+<div id="board"></div>
+<div style="display:flex;flex-direction:column;align-items:center;width:100%">
+<div id="score"><span id="t_score">نتيجة</span> X:<b id="sx">0</b> O:<b id="so">0</b> =<b id="sd">0</b></div>
+<div id="controls"><button class="btn play" onclick="togglePause()" id="t_pause">⏸️ وقفة</button></div>
+<div id="footer">
+<div>صنع بواسطة: youssefait kourri</div>
+<div>تاريخ الإنشاء: 2026/10/23 | الإصدار: V14.1</div>
+</div>
+</div>
+</div>
+
+<div id="pauseScreen" class="hidden">
+<div id="pauseBox">
+<h2 id="t_pauseTitle">⏸️ وقفة</h2>
+<div id="pauseModeBar">
+<button class="modeBtn" id="pm_dark" onclick="setModeFromPause('dark')">🌙 مظلم</button>
+<button class="modeBtn" id="pm_light" onclick="setModeFromPause('light')">☀️ ساطع</button>
+</div>
+<p style="font-size:10px;font-weight:bold;margin:6px 0 2px" id="t_langTitle">اللغة</p>
+<div id="pauseLangBar">
+<button class="langBtn" id="pp_ma" onclick="setLang('ma')">🇲🇦 دارجة</button>
+<button class="langBtn" id="pp_ar" onclick="setLang('ar')">🇸🇦 فصحى</button>
+<button class="langBtn" id="pp_en" onclick="setLang('en')">🇺🇸 EN</button>
+<button class="langBtn" id="pp_fr" onclick="setLang('fr')">🇫🇷 FR</button>
+</div>
+<button style="margin-top:8px;background:#222" id="t_changeProfile" onclick="showProfile()">👤 بدل البروفيل</button>
+<button class="btn play" style="padding:10px 28px;background:#000!important;color:#fff!important;margin-top:8px" onclick="togglePause()" id="t_resume">متابعة ▶️</button>
+</div>
+</div>
+
+<script>
+const AVATARS=["😎","🔥","👑","💀","🤖","👾","🎃","🦁","🐺","🦊","🐯","🦄","🐉","⚡","💎","🌟","🚀","🎮","👨‍💻","👩‍💻","🥷","🧙‍♂️","🧝‍♀️","🦸‍♂️","🦸‍♀️","😈","👻","🤡","🦝","🐼"];
+const TRANSLATIONS={
+ma:{who:"👤 شكون نتا؟",gender:"الجنس",male:"ذكر 👨",female:"أنثى 👩",age:"العمر",kid:"قل من 13",teen:"13-18",young:"19-25",adult:"26+",enter:"حفظ ودخول 🚀",chooseAvatar:"اختر صورتك 👇",changeProfile:"👤 بدل البروفيل",profile:"بروفيل",level:"المرحلة",power:"قوة",pause:"⏸️ وقفة",resume:"متابعة ▶️",pauseTitle:"⏸️ وقفة",langTitle:"اللغة",dark:"🌙 مظلم",light:"☀️ ساطع",score:"نتيجة",easy:"😊 سهل",medium:"🤔 متوسط",hard:"😈 صعب",adaptive:"🧠 ذكي",greet_m_kid:n=>`يلا يا بطل ${n} 🚀`,greet_m_teen:n=>`نوض يا ${n} 😎`,greet_m_adult:n=>`دورك يا ${n} 🔥`,greet_f_kid:n=>`يلا ${n} 🌸`,greet_f_teen:n=>`يلا ${n} 💅`,greet_f_adult:n=>`دورك يا ${n} 👑`,win_m:n=>[`عاااش ${n}! 🔥`,`برافو ${n}! 💪`],win_f:n=>[`برافو ${n}! 👑`,`يا سلام ${n}! 💅`],lose_m:n=>`معليش ${n} 😤`,lose_f:n=>`معليش ${n} 💪`,draw:n=>`تعادل ${n}! 🤝`,botThink_m:n=>`كيفكر يغلبك ${n}... 😈`,botThink_f:n=>`كيفكر يغلب ${n}... 🤔`,botInfo2:e=>`🧠 ${e.name} | LVL ${e.lvl}`,turnYou:"دورك X",turnBot:"دور البوت O"},
+ar:{who:"👤 من أنت؟",gender:"الجنس",male:"ذكر 👨",female:"أنثى 👩",age:"العمر",kid:"أقل من 13",teen:"13-18",young:"19-25",adult:"26+",enter:"حفظ ودخول 🚀",chooseAvatar:"اختر صورتك 👇",changeProfile:"👤 تغيير الملف الشخصي",profile:"الملف",level:"المستوى",power:"القوة",pause:"⏸️ إيقاف",resume:"متابعة ▶️",pauseTitle:"⏸️ متوقف",langTitle:"اللغة",dark:"🌙 داكن",light:"☀️ فاتح",score:"النتيجة",easy:"😊 سهل",medium:"🤔 متوسط",hard:"😈 صعب",adaptive:"🧠 تكيفي",greet_m_kid:n=>`هيا يا بطل ${n} 🚀`,greet_m_teen:n=>`هيا ${n} 😎`,greet_m_adult:n=>`دورك يا ${n} 🔥`,greet_f_kid:n=>`هيا ${n} 🌸`,greet_f_teen:n=>`هيا ${n} 💅`,greet_f_adult:n=>`دورك يا ملكة ${n} 👑`,win_m:n=>[`أحسنت ${n}! 🔥`,`ممتاز ${n}! 💪`],win_f:n=>[`أحسنتِ ${n}! 👑`,`ممتازة ${n}! 💅`],lose_m:n=>`لا بأس ${n} 😤`,lose_f:n=>`لا بأس ${n} 💪`,draw:n=>`تعادل ${n}! 🤝`,botThink_m:n=>`يفكر كيف يهزمك ${n}... 😈`,botThink_f:n=>`يفكر كيف يهزم ${n}... 🤔`,botInfo2:e=>`🧠 ${e.name} | LVL ${e.lvl}`,turnYou:"دورك X",turnBot:"الروبوت O"},
+en:{who:"👤 Who are you?",gender:"Gender",male:"Male 👨",female:"Female 👩",age:"Age",kid:"Under 13",teen:"13-18",young:"19-25",adult:"26+",enter:"Save & Enter 🚀",chooseAvatar:"Choose your avatar 👇",changeProfile:"👤 Change Profile",profile:"Profile",level:"Level",power:"Power",pause:"⏸️ Pause",resume:"Resume ▶️",pauseTitle:"⏸️ Paused",langTitle:"Language",dark:"🌙 Dark",light:"☀️ Light",score:"Score",easy:"😊 Easy",medium:"🤔 Med",hard:"😈 Hard",adaptive:"🧠 Smart",greet_m_kid:n=>`Go ${n} 🚀`,greet_m_teen:n=>`Come on ${n} 😎`,greet_m_adult:n=>`Your turn ${n} 🔥`,greet_f_kid:n=>`Go ${n} 🌸`,greet_f_teen:n=>`Go ${n} 💅`,greet_f_adult:n=>`Queen ${n} 👑`,win_m:n=>[`Great ${n}! 🔥`,`Bravo ${n}! 💪`],win_f:n=>[`Great ${n}! 👑`,`Bravo ${n}! 💅`],lose_m:n=>`Don't worry ${n} 😤`,lose_f:n=>`Don't worry ${n} 💪`,draw:n=>`Draw ${n}! 🤝`,botThink_m:n=>`Thinking how to beat ${n}... 😈`,botThink_f:n=>`Thinking... ${n} 🤔`,botInfo2:e=>`🧠 ${e.name} | LVL ${e.lvl}`,turnYou:"Your turn X",turnBot:"Bot O"},
+fr:{who:"👤 Qui es-tu?",gender:"Genre",male:"Homme 👨",female:"Femme 👩",age:"Âge",kid:"-13",teen:"13-18",young:"19-25",adult:"26+",enter:"Sauver & Entrer 🚀",chooseAvatar:"Choisis ton avatar 👇",changeProfile:"👤 Changer le profil",profile:"Profil",level:"Niveau",power:"Force",pause:"⏸️ Pause",resume:"Reprendre ▶️",pauseTitle:"⏸️ Pause",langTitle:"Langue",dark:"🌙 Sombre",light:"☀️ Clair",score:"Score",easy:"😊 Facile",medium:"🤔 Moyen",hard:"😈 Dur",adaptive:"🧠 Smart",greet_m_kid:n=>`Allez ${n} 🚀`,greet_m_teen:n=>`Allez ${n} 😎`,greet_m_adult:n=>`Ton tour ${n} 🔥`,greet_f_kid:n=>`Allez ${n} 🌸`,greet_f_teen:n=>`Allez ${n} 💅`,greet_f_adult:n=>`Reine ${n} 👑`,win_m:n=>[`Bravo ${n}! 🔥`,`Super ${n}! 💪`],win_f:n=>[`Bravo ${n}! 👑`,`Super ${n}! 💅`],lose_m:n=>`T'inquiète ${n} 😤`,lose_f:n=>`T'inquiète ${n} 💪`,draw:n=>`Égalité ${n}! 🤝`,botThink_m:n=>`Réfléchit comment te battre ${n}... 😈`,botThink_f:n=>`Réfléchit... ${n} 🤔`,botInfo2:e=>`🧠 ${e.name} | LVL ${e.lvl}`,turnYou:"Ton tour X",turnBot:"Bot O"}
+};
+let board=[],turn='X',over=false,lvl=parseInt(localStorage.getItem('xo_lvl')||'1'),scores=JSON.parse(localStorage.getItem('xo_scores')||'{"X":0,"O":0,"D":0}'),paused=false,mode=localStorage.getItem('xo_mode')||'dark',difficulty=localStorage.getItem('xo_diff')||'adaptive',lang=localStorage.getItem('xo_lang')||'ma';
+let aiMemory=JSON.parse(localStorage.getItem('xo_ai')||'{"games":0,"intelligence":20}');
+let profile=null;try{profile=JSON.parse(localStorage.getItem('xo_profile')||'null')}catch(e){profile=null}
+let selectedAvatar=profile?.avatar||"😎";
+const W=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+const bE=document.getElementById('board');
+function T(){return TRANSLATIONS[lang]}
+function createStars(){let s=document.getElementById('stars');s.innerHTML='';for(let i=0;i<10;i++){let st=document.createElement('div');st.className='star';st.style.width='2px';st.style.height='2px';st.style.left=Math.random()*100+'%';st.style.top=Math.random()*70+'%';s.appendChild(st)}} 
+function buildAvatars(){let g=document.getElementById('avatarGrid');g.innerHTML='';AVATARS.forEach((av)=>{let d=document.createElement('div');d.className='avatar'+(av==selectedAvatar?' selected':'');d.innerText=av;d.onclick=()=>{selectedAvatar=av;document.querySelectorAll('.avatar').forEach(a=>a.classList.remove('selected'));d.classList.add('selected');};g.appendChild(d);});}
+function applyMode(){document.body.className=mode;document.getElementById('stars').style.display=mode=='dark'?'block':'none';localStorage.setItem('xo_mode',mode);document.querySelectorAll('.modeBtn').forEach(b=>b.classList.remove('active'));let id=mode=='dark'?'pm_dark':'pm_light';let el=document.getElementById(id);if(el)el.classList.add('active')}
+function setModeFromPause(m){mode=m;applyMode();}
+function setLang(l){lang=l;localStorage.setItem('xo_lang',l);document.querySelectorAll('.langBtn').forEach(b=>b.classList.remove('active'));document.getElementById('pl_'+l)?.classList.add('active');document.getElementById('pp_'+l)?.classList.add('active');applyLang();updateAIInfo();if(profile)render();}
+function applyLang(){let t=T();['who','gender','male','female','age','kid','teen','young','adult','enter','chooseAvatar','changeProfile','level','power','pause','resume','pauseTitle','langTitle','score'].forEach(k=>{let el=document.getElementById('t_'+k);if(el)el.innerText=t[k];});let dm=document.getElementById('pm_dark'),lm=document.getElementById('pm_light');if(dm)dm.innerText=t.dark;if(lm)lm.innerText=t.light;document.getElementById('d_easy').innerText=t.easy;document.getElementById('d_medium').innerText=t.medium;document.getElementById('d_hard').innerText=t.hard;document.getElementById('d_adaptive').innerText=t.adaptive;}
+function updateProfileIcon(){let ic=document.getElementById('profileIcon');ic.innerText=(profile&&profile.avatar)?profile.avatar:"👤"}
+function showProfile(){buildAvatars();document.getElementById('profileScreen').classList.remove('hidden');if(profile){document.getElementById('p_name').value=profile.name;document.getElementById('p_gender').value=profile.gender;document.getElementById('p_age').value=profile.age;selectedAvatar=profile.avatar||"😎";}document.querySelectorAll('.avatar').forEach(a=>{if(a.innerText==selectedAvatar)a.classList.add('selected')})}
+function saveProfile(){let n=document.getElementById('p_name').value.trim(),g=document.getElementById('p_gender').value,a=document.getElementById('p_age').value;if(!n||!g||!a){alert(T().who);return}profile={name:n,gender:g,age:a,avatar:selectedAvatar};localStorage.setItem('xo_profile',JSON.stringify(profile));document.getElementById('profileScreen').classList.add('hidden');updateProfileIcon();applyLang();createBoard();}
+function getGreeting(){if(!profile)return T().turnYou;let t=T(),n=profile.name,ag=profile.age,gen=profile.gender;if(gen=='female'){if(ag=='kid')return t.greet_f_kid(n);if(ag=='teen')return t.greet_f_teen(n);return t.greet_f_adult(n);}else{if(ag=='kid')return t.greet_m_kid(n);if(ag=='teen')return t.greet_m_teen(n);return t.greet_m_adult(n);}}
+function getWinMsg(){if(!profile)return '🎉 Win!';let t=T(),n=profile.name;let arr=profile.gender=='female'?t.win_f(n):t.win_m(n);return arr[Math.floor(Math.random()*arr.length)];}
+function getLoseMsg(){if(!profile)return 'Bot win!';let t=T();return profile.gender=='female'?t.lose_f(profile.name):t.lose_m(profile.name)}
+function setDiff(d){difficulty=d;localStorage.setItem('xo_diff',d);document.querySelectorAll('#diffBar .btn').forEach(b=>b.classList.remove('play'));document.getElementById('d_'+d).classList.add('play');updateAIInfo()}
+function updateAIInfo(){let t=T();if(!profile){document.getElementById('aiInfo').innerText="";return}document.getElementById('aiInfo').innerText=t.botInfo2({name:profile.name,intel:aiMemory.intelligence,lvl:lvl});}
+function saveAll(){localStorage.setItem('xo_lvl',lvl);localStorage.setItem('xo_scores',JSON.stringify(scores));localStorage.setItem('xo_ai',JSON.stringify(aiMemory));localStorage.setItem('xo_board',JSON.stringify({board,turn,over}));}
+function createBoard(){let saved=null;try{saved=JSON.parse(localStorage.getItem('xo_board')||'null')}catch(e){}bE.innerHTML='';if(saved&&saved.board&&!saved.over&&saved.board.some(v=>v!='')){board=saved.board;turn=saved.turn;over=saved.over;}else{board=Array(9).fill('');over=false;turn='X';}for(let i=0;i<9;i++){let ce=document.createElement('div');ce.className='cell';ce.id='c'+i;ce.onclick=()=>play(i);bE.appendChild(ce)}render();document.getElementById('lvl').innerText=lvl;document.getElementById('status').innerText=getGreeting();updatePower();}
+function play(i){if(board[i]||over||paused)return;board[i]=turn;render();if(checkWin())return;turn=turn=='X'?'O':'X';saveAll();if(turn=='O'){let t=T();let txt=profile?(profile.gender=='female'?t.botThink_f(profile.name):t.botThink_m(profile.name)):t.turnBot;document.getElementById('status').innerText=txt;setTimeout(hardBot,200);}else{document.getElementById('status').innerText=getGreeting();}}
+function render(){board.forEach((v,i)=>{let e=document.getElementById('c'+i);if(!e)return;e.innerText=v;e.className='cell'+(v?' '+v.toLowerCase():'')})}
+function checkWin(){for(let c of W){let [a,b,d]=c;if(board[a]&&board[a]==board[b]&&board[a]==board[d]){over=true;c.forEach(ii=>{let el=document.getElementById('c'+ii);if(el)el.classList.add('win')});aiMemory.games++;if(board[a]=='X'){scores.X++;lvl++;aiMemory.intelligence=Math.min(95,aiMemory.intelligence+1);document.getElementById('status').innerText=getWinMsg();}else{scores.O++;document.getElementById('status').innerText=getLoseMsg();}saveAll();updateScore();updateAIInfo();setTimeout(()=>{localStorage.removeItem('xo_board');createBoard();},700);return true;}}if(!board.includes('')){over=true;scores.D++;aiMemory.games++;document.getElementById('status').innerText=T().draw(profile?profile.name:'');saveAll();updateScore();setTimeout(()=>{localStorage.removeItem('xo_board');createBoard();},600);return true}return false;}
+function hardBot(){if(over)return;let intel=difficulty=='easy'?15:difficulty=='medium'?55:difficulty=='hard'?95:aiMemory.intelligence;if(Math.random()*100<intel){let m=findBest('O');if(m!=null){play(m);return}m=findBest('X');if(m!=null){play(m);return}if(board[4]==''){play(4);return}let corners=[0,2,6,8].filter(i=>board[i]=='');if(corners.length){play(corners[Math.floor(Math.random()*corners.length)]);return}}let emp=board.map((v,i)=>v?'':i).filter(v=>v!=='');if(emp.length)play(emp[Math.floor(Math.random()*emp.length)]);}
+function findBest(p){for(let c of W){let [a,b,d]=c;if(board[a]==p&&board[b]==p&&board[d]=='')return d;if(board[a]==p&&board[d]==p&&board[b]=='')return b;if(board[b]==p&&board[d]==p&&board[a]=='')return a}return null}
+function updatePower(){let pr=Math.min(5,Math.floor(lvl/200)+1);document.getElementById('power').innerText='★'.repeat(pr)+'☆'.repeat(5-pr)}
+function updateScore(){document.getElementById('sx').innerText=scores.X;document.getElementById('so').innerText=scores.O;document.getElementById('sd').innerText=scores.D;saveAll()}
+function togglePause(){paused=!paused;document.getElementById('pauseScreen').classList.toggle('hidden',!paused);if(paused){applyMode();setLang(lang);}}
+createStars();buildAvatars();applyMode();setLang(lang);updateScore();updateProfileIcon();
+if(!profile){document.getElementById('profileScreen').classList.remove('hidden');}else{createBoard();setDiff(difficulty);}
+document.getElementById('d_easy').onclick=()=>setDiff('easy');document.getElementById('d_medium').onclick=()=>setDiff('medium');document.getElementById('d_hard').onclick=()=>setDiff('hard');document.getElementById('d_adaptive').onclick=()=>setDiff('adaptive');
+</script>
+</body>
+</html>
